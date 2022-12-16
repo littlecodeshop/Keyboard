@@ -40,7 +40,7 @@ public struct KeyboardKey: View {
         self.alignment = alignment
         self.isActivatedExternally = isActivatedExternally
     }
-
+    
     var pitch: Pitch
     var isActivated: Bool
     var whiteKeyColor: Color
@@ -50,74 +50,72 @@ public struct KeyboardKey: View {
     var alignment: Alignment
     var text: String
     var isActivatedExternally: Bool
-
+    
     var keyColor: Color {
         if isActivatedExternally || isActivated {
             return pressedColor
         }
         return pitch.note(in: .C).accidental == .natural ? whiteKeyColor : blackKeyColor
     }
-
+    
     var isWhite: Bool {
         pitch.note(in: .C).accidental == .natural
     }
-
+    
     var textColor: Color {
         return pitch.note(in: .C).accidental == .natural ? blackKeyColor : whiteKeyColor
     }
-
+    
     func minDimension(_ size: CGSize) -> CGFloat {
         return min(size.width, size.height)
     }
-
+    
     func isTall(size: CGSize) -> Bool {
         size.height > size.width
     }
-
+    
     // How much of the key height to take up with label
     func relativeFontSize(in containerSize: CGSize) -> CGFloat {
         minDimension(containerSize) * 0.333
     }
-
+    
     let relativeTextPadding = 0.05
-
+    
     func relativeCornerRadius(in containerSize: CGSize) -> CGFloat {
         minDimension(containerSize) * 0.125
     }
-
+    
     func topPadding(_ size: CGSize) -> CGFloat {
         flatTop && alignment == .bottom ? relativeCornerRadius(in: size) : 0
     }
-
+    
     func leadingPadding(_ size: CGSize) -> CGFloat {
         flatTop && alignment == .trailing ? relativeCornerRadius(in: size) : 0
     }
-
+    
     func negativeTopPadding(_ size: CGSize) -> CGFloat {
         flatTop && alignment == .bottom ? -relativeCornerRadius(in: size) :
-            isWhite ? 0.5 : 0
+        isWhite ? 0.5 : 0
     }
-
+    
     func negativeLeadingPadding(_ size: CGSize) -> CGFloat {
         flatTop && alignment == .trailing ? -relativeCornerRadius(in: size) :
-            isWhite ? 0.5 : 0
+        isWhite ? 0.5 : 0
     }
-
+    
     public var body: some View {
         GeometryReader { proxy in
             ZStack(alignment: alignment) {
-//
+                
                 if(isWhite) {
                     Image("white_key")
                         .resizable( capInsets: EdgeInsets(
-                        top: 7,
-                                    leading: 5,
-                                    bottom: 5,
-                                    trailing: 5
-                    ), resizingMode: /*@START_MENU_TOKEN@*/.stretch/*@END_MENU_TOKEN@*/)
-                    if isActivatedExternally || isActivated {
-                        
-                        
+                            top: 7,
+                            leading: 5,
+                            bottom: 5,
+                            trailing: 5
+                        ), resizingMode: /*@START_MENU_TOKEN@*/.stretch/*@END_MENU_TOKEN@*/)
+                    if isActivatedExternally || isActivated { // add a color overlay
                         Rectangle()
                             .foregroundColor(keyColor.opacity(0.3))
                             .padding(.top, topPadding(proxy.size))
@@ -128,14 +126,16 @@ public struct KeyboardKey: View {
                             .padding(.trailing, 0.5)
                     }
                 } else {
+                    
+                    
                     Rectangle()
-                                       .foregroundColor(keyColor)
-                                       .padding(.top, topPadding(proxy.size))
-                                       .padding(.leading, leadingPadding(proxy.size))
-                                       .cornerRadius(relativeCornerRadius(in: proxy.size))
-                                       .padding(.top, negativeTopPadding(proxy.size))
-                                       .padding(.leading, negativeLeadingPadding(proxy.size))
-                                       .padding(.trailing, 0.5)
+                        .foregroundColor(keyColor)
+                        .padding(.top, topPadding(proxy.size))
+                        .padding(.leading, leadingPadding(proxy.size))
+                        .cornerRadius(relativeCornerRadius(in: proxy.size))
+                        .padding(.top, negativeTopPadding(proxy.size))
+                        .padding(.leading, negativeLeadingPadding(proxy.size))
+                        .padding(.trailing, 0.5)
                 }
                 Text(text)
                     .font(Font(.init(.system, size: relativeFontSize(in: proxy.size))))
