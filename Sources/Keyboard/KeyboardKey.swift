@@ -127,15 +127,20 @@ public struct KeyboardKey: View {
                     }
                 } else {
                     
+                    Image("black_key")
+                        .resizable()
+                    if isActivatedExternally || isActivated { // add a color overlay
+                        Rectangle()
+                            .foregroundColor(keyColor.opacity(0.3))
+                            .padding(.top, topPadding(proxy.size))
+                            .padding(.leading, leadingPadding(proxy.size))
+                            .cornerRadius(relativeCornerRadius(in: proxy.size))
+                            .padding(.top, negativeTopPadding(proxy.size))
+                            .padding(.leading, negativeLeadingPadding(proxy.size))
+                            .padding(.trailing, 0.5)
+                    }
+
                     
-                    Rectangle()
-                        .foregroundColor(keyColor)
-                        .padding(.top, topPadding(proxy.size))
-                        .padding(.leading, leadingPadding(proxy.size))
-                        .cornerRadius(relativeCornerRadius(in: proxy.size))
-                        .padding(.top, negativeTopPadding(proxy.size))
-                        .padding(.leading, negativeLeadingPadding(proxy.size))
-                        .padding(.trailing, 0.5)
                 }
                 Text(text)
                     .font(Font(.init(.system, size: relativeFontSize(in: proxy.size))))
