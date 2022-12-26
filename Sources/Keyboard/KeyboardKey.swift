@@ -128,7 +128,7 @@ public struct KeyboardKey: View {
                 } else {
                     
                     Image("black_key")
-                        .resizable()
+                        .resizable(capInsets: EdgeInsets(top: 5, leading: 12, bottom: 30, trailing: 12), resizingMode: .stretch)
                     if isActivatedExternally || isActivated { // add a color overlay
                         Rectangle()
                             .foregroundColor(keyColor.opacity(0.3))
